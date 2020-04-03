@@ -16,22 +16,17 @@ class Pawn
         @pos[1] == 1 ? moves = [[@pos[0],@pos[1]+2],[@pos[0],@pos[1]+1]] : moves = [[@pos[0],@pos[1]+1]]
         jumps = [[@pos[0]+1,@pos[1]+1], [@pos[0]-1,@pos[1]+1]]
         jumps.each do |jump|
-          pp $board.board[jump[0]][jump[1]]
-          if $board.board[jump[0]][jump[1]].symbol != "_" && $board.board[jump[0]][jump[1]].color == "white"
-            moves << jump
-          end
+          slot = $board.at_pos(jump)
+          moves << jump if !slot.nil? && slot.symbol != "_" && slot.color == "white"
         end
       else
         @pos[1] == 6 ? moves = [[@pos[0],@pos[1]-2],[@pos[0],@pos[1]-1]] : moves = [[@pos[0],@pos[1]-1]]
         jumps = [[@pos[0]+1,@pos[1]-1], [@pos[0]-1,@pos[1]-1]]
         jumps.each do |jump|
-          pp $board.board[jump[0]][jump[1]]
-          if $board.board[jump[0]][jump[1]].symbol != "_" && $board.board[jump[0]][jump[1]].color == "black"
-            moves << jump
-          end
+          slot = $board.at_pos(jump)
+          moves << jump if !slot.nil? && slot.symbol != "_" && slot.color == "black"
         end
       end
-
       moves
     end
 end

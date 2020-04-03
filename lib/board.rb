@@ -7,7 +7,7 @@ class Board
     @board = Array.new(8){ Array.new(8, Mpty.new) }
   end
 
-  def to_pos(pos)
+  def at_pos(pos)
     @board[pos[0]][pos[1]]
   end
 

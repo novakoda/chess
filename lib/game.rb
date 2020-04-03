@@ -19,11 +19,12 @@ class Game
     self.turn_piece(@player1)
   end
 
-  def valid_move?(pos)
-    if pos[0] < 0 || pos[0] > 7 || pos[1] < 0 || pos[1] > 7
-      false
+  def valid_move?(pos, piece)
+
+    if (0..7).include?(pos[0]) && (0..7).include?(pos[1])
+      $board.at_pos(pos).color == piece.color ? false : true
     else
-      true
+      false
     end
   end
 
@@ -35,7 +36,7 @@ class Game
       puts "Invalid answer"
       self.turn_piece(player)
     end
-    piece = $board.to_pos(answer)
+    piece = $board.at_pos(answer)
     if piece.color != player.color
       puts "You selected the wrong color"
       self.turn_piece(player)
@@ -48,7 +49,7 @@ class Game
   def turn_dest(piece, player)
     moves = []
     piece.moves.each do |pos|
-      moves << pos if valid_move?(pos)
+      moves << pos if valid_move?(pos, piece)
     end
     puts "Possible Moves : #{moves}"
     old_pos = piece.pos
