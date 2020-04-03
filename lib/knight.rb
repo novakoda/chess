@@ -2,13 +2,13 @@ require_relative "board.rb"
 
 class Knight
     attr_accessor :pos, :color, :parent, :children, :symbol
-    def initialize(board, pos = [0,0], color = "black", parent = nil, children = [])
+    def initialize(pos = [0,0], color = "black", parent = nil, children = [])
         @pos = pos
         @color = color
         @parent = parent
         @children = children
         @color == "black" ? @symbol = "♞" : @symbol = "♘"
-        board.board[pos[0]][pos[1]] = self
+        $board.board[pos[0]][pos[1]] = self
     end
 
     def moves

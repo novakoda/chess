@@ -5,16 +5,16 @@ require_relative "player.rb"
 
 class Game
   def initialize
+    $board = Board.new
     @player1 = Player.new("white")
     @player2 = Player.new("black")
-    @board = Board.new
-    Knight.new(@board,[1,0],"black")
-    Knight.new(@board,[6,0],"black")
-    Knight.new(@board,[1,7],"white")
-    Knight.new(@board,[6,7],"white")
+    Knight.new([1,0],"black")
+    Knight.new([6,0],"black")
+    Knight.new([1,7],"white")
+    Knight.new([6,7],"white")
     for i in 0..7 do
-      Pawn.new(@board,[i,6],"white")
-      Pawn.new(@board,[i,1],"black")
+      Pawn.new([i,6],"white")
+      Pawn.new([i,1],"black")
     end
     self.turn_piece(@player1)
   end
@@ -28,14 +28,14 @@ class Game
   end
 
   def turn_piece(player)
-    @board.show
+    $board.show
     puts "Select the #{player.color} piece you wish to move via coords X,Y"
     answer = gets.chomp.split(/[^\d]/).map(&:to_i)
-    if answer.length > 2 || @board.board[answer[0]][answer[1]].symbol == "_"
+    if answer.length > 2 || $board.board[answer[0]][answer[1]].symbol == "_"
       puts "Invalid answer"
       self.turn_piece(player)
     end
-    piece = @board.to_pos(answer)
+    piece = $board.to_pos(answer)
     if piece.color != player.color
       puts "You selected the wrong color"
       self.turn_piece(player)
@@ -68,11 +68,11 @@ class Game
   def move_piece(piece, pos)
     old_pos = piece.pos
     piece.pos = pos
-    @board.board[pos[0]][pos[1]] = nil
-    @board.board[pos[0]][pos[1]] = piece
-    @board.board[old_pos[0]][old_pos[1]] = Mpty.new
+    $board.board[pos[0]][pos[1]] = nil
+    $board.board[pos[0]][pos[1]] = piece
+    $board.board[old_pos[0]][old_pos[1]] = Mpty.new
   end
 
-  
+
 
 end
