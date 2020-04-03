@@ -16,42 +16,49 @@ class Game
       Pawn.new(@board,[i,6],"white")
       Pawn.new(@board,[i,1],"black")
     end
-    @board.show
   end
 
   def valid_move?(pos)
-    false if pos[0] < 0 || pos[0] > 7 || pos[1] < 0 || pos[1] > 7
-    true
+    if pos[0] < 0 || pos[0] > 7 || pos[1] < 0 || pos[1] > 7
+      false
+    else
+      true
+    end
   end
 
-  def select_piece
+  def turn_piece
+    @board.show
     puts "Select the piece you wish to move via coords X,Y"
     answer = gets.chomp.split(/[^\d]/).map(&:to_i)
-    if answer.length > 2 || @board.board[answer[0]][answer[1]] == "_"
+    if answer.length > 2 || @board.board[answer[0]][answer[1]].symbol == "_"
       puts "Invalid answer"
-      self.select_piece
+      self.turn_piece
     end
     piece = @board.to_pos(answer)
     puts "You selected the #{piece.symbol} at position #{answer}"
-    self.select_dest(piece)
+    puts
+    self.turn_dest(piece)
   end
 
-  def select_dest(piece)
+  def turn_dest(piece)
     moves = []
 
     piece.moves.each do |pos|
-      moves << @board.to_pos(pos) if valid_move?(pos)
+      moves << pos if valid_move?(pos)
     end
+    puts "Possible Moves : #{moves}"
     old_pos = piece.pos
-    puts "Enter the destination position"
+    puts "Enter the destination position via coords X,Y"
+    puts "or type 'back' to select another piece"
+    response = gets.chomp
+    self.turn_piece if response == "back"
     answer = gets.chomp.split(/[^\d]/).map(&:to_i)
-    if answer.length > 2
+    if answer.length > 2 || !moves.include?(answer)
       puts "Invalid answer"
-      self.select_dest(piece)
+      self.turn_dest(piece)
     end
     self.move_piece(piece, answer)
-    @board.show
-    self.select_piece
+    self.turn_piece
   end
 
   def move_piece(piece, pos)
