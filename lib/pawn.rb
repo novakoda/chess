@@ -12,10 +12,10 @@ class Pawn
     end
 
     def moves
-      if @pos[1] == 1
-        moves = [[@pos[0],@pos[1]+2],[@pos[0],@pos[1]+1]]
+      if color == "black"
+        @pos[1] == 1 ? moves = [[@pos[0],@pos[1]+2],[@pos[0],@pos[1]+1]] : moves = [[@pos[0],@pos[1]+1]]
       else
-        moves = [[@pos[0],@pos[1]+1]]
+        @pos[1] == 1 ? moves = [[@pos[0],@pos[1]-2],[@pos[0],@pos[1]-1]] : moves = [[@pos[0],@pos[1]-1]]
       end
     end
 end

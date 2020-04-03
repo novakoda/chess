@@ -16,6 +16,7 @@ class Game
       Pawn.new(@board,[i,6],"white")
       Pawn.new(@board,[i,1],"black")
     end
+    self.turn_piece(@player2)
   end
 
   def valid_move?(pos)
@@ -26,23 +27,26 @@ class Game
     end
   end
 
-  def turn_piece
+  def turn_piece(player)
     @board.show
-    puts "Select the piece you wish to move via coords X,Y"
+    puts "Select the #{player.color} piece you wish to move via coords X,Y"
     answer = gets.chomp.split(/[^\d]/).map(&:to_i)
     if answer.length > 2 || @board.board[answer[0]][answer[1]].symbol == "_"
       puts "Invalid answer"
-      self.turn_piece
+      self.turn_piece(player)
     end
     piece = @board.to_pos(answer)
+    if piece.color != player.color
+      puts "You selected the wrong color"
+      self.turn_piece(player)
+    end
     puts "You selected the #{piece.symbol} at position #{answer}"
     puts
-    self.turn_dest(piece)
+    self.turn_dest(piece, player)
   end
 
-  def turn_dest(piece)
+  def turn_dest(piece, player)
     moves = []
-
     piece.moves.each do |pos|
       moves << pos if valid_move?(pos)
     end
@@ -51,14 +55,14 @@ class Game
     puts "Enter the destination position via coords X,Y"
     puts "or type 'back' to select another piece"
     response = gets.chomp
-    self.turn_piece if response == "back"
+    self.turn_piece(player) if response == "back"
     answer = gets.chomp.split(/[^\d]/).map(&:to_i)
     if answer.length > 2 || !moves.include?(answer)
       puts "Invalid answer"
       self.turn_dest(piece)
     end
     self.move_piece(piece, answer)
-    self.turn_piece
+    piece.color == "black" ? self.turn_piece(@player1) : self.turn_piece(@player2)
   end
 
   def move_piece(piece, pos)
