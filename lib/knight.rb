@@ -7,7 +7,7 @@ class Knight
         @color = color
         @parent = parent
         @children = children
-        color == "black" ? @symbol = "K" : @symbol = "k"
+        @color == "black" ? @symbol = "♞" : @symbol = "♘"
         board.board[pos[0]][pos[1]] = self
     end
 
@@ -15,11 +15,6 @@ class Knight
       moves = [[pos[0]+1,pos[1]+2],[pos[0]+2,pos[1]+1],[pos[0]+1,pos[1]-2],
       [pos[0]+2,pos[1]-1],[pos[0]-1,pos[1]-2],[pos[0]-2,pos[1]-1],
       [pos[0]-1,pos[1]+2],[pos[0]-2,pos[1]+1]]
-    end
-
-    def move(pos)
-      @pos = pos
-      board.board[pos[0]][pos[1]] = self
     end
 end
 

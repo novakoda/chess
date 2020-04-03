@@ -1,4 +1,5 @@
 require_relative "knight.rb"
+require_relative "pawn.rb"
 require_relative "board.rb"
 require_relative "player.rb"
 
@@ -9,6 +10,12 @@ class Game
     @board = Board.new
     Knight.new(@board,[1,0],"black")
     Knight.new(@board,[6,0],"black")
+    Knight.new(@board,[1,7],"white")
+    Knight.new(@board,[6,7],"white")
+    for i in 0..7 do
+      Pawn.new(@board,[i,6],"white")
+      Pawn.new(@board,[i,1],"black")
+    end
     @board.show
   end
 
@@ -17,21 +24,19 @@ class Game
     true
   end
 
-  def turn
+  def select_piece
     puts "Select the piece you wish to move via coords X,Y"
-    tester = @board.to_pos([1,0])
-    puts "K should be #{tester}"
-    answer = gets.chomp.gsub(/[^\d]/,'').to_i.digits.reverse
+    answer = gets.chomp.split(/[^\d]/).map(&:to_i)
     if answer.length > 2 || @board.board[answer[0]][answer[1]] == "_"
       puts "Invalid answer"
-      self.turn
+      self.select_piece
     end
     piece = @board.to_pos(answer)
     puts "You selected the #{piece.symbol} at position #{answer}"
-    self.move(piece)
+    self.select_dest(piece)
   end
 
-  def move(piece)
+  def select_dest(piece)
     moves = []
 
     piece.moves.each do |pos|
@@ -39,16 +44,21 @@ class Game
     end
     old_pos = piece.pos
     puts "Enter the destination position"
-    answer = gets.chomp.gsub(/[^\d]/,'').to_i.digits.reverse
+    answer = gets.chomp.split(/[^\d]/).map(&:to_i)
     if answer.length > 2
       puts "Invalid answer"
-      self.move(piece)
+      self.select_dest(piece)
     end
-    piece.pos = answer
-    @board.board[answer[0]][answer[1]] = piece
-    @board.board[old_pos[0]][old_pos[1]] = Mpty.new
+    self.move_piece(piece, answer)
     @board.show
-    self.turn
+    self.select_piece
+  end
+
+  def move_piece(piece, pos)
+    old_pos = piece.pos
+    piece.pos = pos
+    @board.board[pos[0]][pos[1]] = piece
+    @board.board[old_pos[0]][old_pos[1]] = Mpty.new
   end
 
 
