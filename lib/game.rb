@@ -5,8 +5,8 @@ require_relative "player.rb"
 
 class Game
   def initialize
-    @player1 = Player.new("black")
-    @player2 = Player.new("white")
+    @player1 = Player.new("white")
+    @player2 = Player.new("black")
     @board = Board.new
     Knight.new(@board,[1,0],"black")
     Knight.new(@board,[6,0],"black")
@@ -16,7 +16,7 @@ class Game
       Pawn.new(@board,[i,6],"white")
       Pawn.new(@board,[i,1],"black")
     end
-    self.turn_piece(@player2)
+    self.turn_piece(@player1)
   end
 
   def valid_move?(pos)
@@ -56,10 +56,10 @@ class Game
     puts "or type 'back' to select another piece"
     response = gets.chomp
     self.turn_piece(player) if response == "back"
-    answer = gets.chomp.split(/[^\d]/).map(&:to_i)
+    answer = response.split(/[^\d]/).map(&:to_i)
     if answer.length > 2 || !moves.include?(answer)
       puts "Invalid answer"
-      self.turn_dest(piece)
+      self.turn_dest(piece, player)
     end
     self.move_piece(piece, answer)
     piece.color == "black" ? self.turn_piece(@player1) : self.turn_piece(@player2)
@@ -68,9 +68,11 @@ class Game
   def move_piece(piece, pos)
     old_pos = piece.pos
     piece.pos = pos
+    @board.board[pos[0]][pos[1]] = nil
     @board.board[pos[0]][pos[1]] = piece
     @board.board[old_pos[0]][old_pos[1]] = Mpty.new
   end
 
+  
 
 end
