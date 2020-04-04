@@ -6,8 +6,6 @@ require_relative "player.rb"
 class Game
   def initialize
     $board = Board.new
-    @player1 = Player.new("white")
-    @player2 = Player.new("black")
     Knight.new([1,0],"black")
     Knight.new([6,0],"black")
     Knight.new([1,7],"white")
@@ -16,7 +14,6 @@ class Game
       Pawn.new([i,6],"white")
       Pawn.new([i,1],"black")
     end
-    self.turn_piece(@player1)
   end
 
   def valid_move?(pos, piece)
@@ -62,7 +59,7 @@ class Game
       self.turn_dest(piece, player)
     end
     self.move_piece(piece, answer)
-    piece.color == "black" ? self.turn_piece(@player1) : self.turn_piece(@player2)
+    piece.color == "black" ? self.turn_piece($player1) : self.turn_piece($player2)
   end
 
   def move_piece(piece, pos)
