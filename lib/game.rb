@@ -1,4 +1,5 @@
 require_relative "knight.rb"
+require_relative "rook.rb"
 require_relative "pawn.rb"
 require_relative "board.rb"
 require_relative "player.rb"
@@ -8,11 +9,16 @@ class Game
     $board = Board.new
     Knight.new([1,0],"black")
     Knight.new([6,0],"black")
+    Rook.new([0,0],"black")
+    Rook.new([7,0],"black")
+
     Knight.new([1,7],"white")
     Knight.new([6,7],"white")
+    Rook.new([0,7],"white")
+    Rook.new([7,7],"white")
     for i in 0..7 do
-      Pawn.new([i,6],"white")
       Pawn.new([i,1],"black")
+      Pawn.new([i,6],"white")
     end
   end
 
