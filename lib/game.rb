@@ -20,7 +20,6 @@ class Game
   end
 
   def valid_move?(pos, piece)
-
     if (0..7).include?(pos[0]) && (0..7).include?(pos[1])
       $board.at_pos(pos).color == piece.color ? false : true
     else
