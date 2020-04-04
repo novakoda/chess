@@ -2,6 +2,7 @@ require_relative "knight.rb"
 require_relative "rook.rb"
 require_relative "bishop.rb"
 require_relative "queen.rb"
+require_relative "king.rb"
 require_relative "pawn.rb"
 require_relative "board.rb"
 require_relative "player.rb"
@@ -16,6 +17,7 @@ class Game
     Bishop.new([2,0],"black")
     Bishop.new([5,0],"black")
     Queen.new([4,0],"black")
+    King.new([3,0],"black")
 
     Knight.new([1,7],"white")
     Knight.new([6,7],"white")
@@ -24,6 +26,7 @@ class Game
     Bishop.new([2,7],"white")
     Bishop.new([5,7],"white")
     Queen.new([4,7],"white")
+    King.new([3,7],"white")
     for i in 0..7 do
       Pawn.new([i,1],"black")
       Pawn.new([i,6],"white")
