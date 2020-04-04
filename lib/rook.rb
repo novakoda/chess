@@ -15,7 +15,7 @@ class Rook
       slots.each do |slot|
         curr = [@pos[0]+slot[0],@pos[1]+slot[1]]
         unless curr.include?(8) || curr.include?(-1)
-          until $board.board[curr[0]][curr[1]].nil? || $board.board[curr[0]][curr[1]].color == self.color do
+          until curr.include?(8) || curr.include?(-1) || $board.board[curr[0]][curr[1]].nil? || $board.board[curr[0]][curr[1]].color == self.color do
             moves << curr
             break if $board.board[curr[0]][curr[1]].color != self.color && !$board.board[curr[0]][curr[1]].color.nil?
             curr = [curr[0]+slot[0],curr[1]+slot[1]]
