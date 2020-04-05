@@ -14,33 +14,23 @@ class Rook
       slots = [[0,1],[0,-1],[1,0],[-1,0]]
       slots.each do |slot|
         curr = [@pos[0]+slot[0],@pos[1]+slot[1]]
-        unless curr.include?(8) || curr.include?(-1)
-          until curr.include?(8) || curr.include?(-1) || $board.board[curr[0]][curr[1]].nil? || $board.board[curr[0]][curr[1]].color == self.color do
+        if valid_move?(curr)
+          while valid_move?(curr) do
             moves << curr
             break if $board.board[curr[0]][curr[1]].color != self.color && !$board.board[curr[0]][curr[1]].color.nil?
             curr = [curr[0]+slot[0],curr[1]+slot[1]]
           end
         end
       end
-
+      # pp "Rook Moves : #{moves}"
       moves
     end
-end
 
-=begin
-def moves
-  moves = []
-  i = 0
-  until $board.board[@pos[0]][i].color == self.color || i > 7 do
-    moves << [@pos[0],i]
-    i += 1
-  end
-  j = 0
-  until $board.board[j][@pos[1]].color == self.color || j > 7 do
-    moves << [j,@pos[1]]
-    j += 1
-  end
-  moves
+    def valid_move?(pos)
+      if (0..7).include?(pos[0]) && (0..7).include?(pos[1])
+        $board.board[pos[0]][pos[1]].color == @color ? false : true
+      else
+        false
+      end
+    end
 end
-
-=end
